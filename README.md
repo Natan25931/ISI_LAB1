@@ -1,5 +1,5 @@
 # Integracja Systemów Informatycznych - Laboratorium 1
-
+Zmiana z poziomu przeglądarki
 **Celem niniejszego projektu** jest praktyczne opanowanie systemu kontroli wersji Git, platformy GitHub oraz przygotowanie lokalnego środowiska programistycznego dla frameworka Django.
 
 ### Wymagania projektowe:
