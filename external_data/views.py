@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import io
 import urllib, base64
 from django.shortcuts import render
+from django.http import JsonResponse
 
 
 def dashboard(request):
@@ -79,3 +80,28 @@ def dashboard(request):
     }
 
     return render(request, 'external_data/dashboard.html', context)
+
+
+def weather_summary_api(request):
+
+    try:
+        lat, lon = 54.5189, 18.5305
+        url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&hourly=temperature_2m&timezone=Europe%2FWarsaw"
+
+        res = requests.get(url, timeout=5)
+        res.raise_for_status()
+        data = res.json()
+
+        temps = data['hourly']['temperature_2m'][:24]
+
+        summary = {
+            'location': 'Gdynia',
+            'forecast_hours': 24,
+            'average_temp': round(sum(temps) / len(temps), 2),
+            'min_temp': min(temps),
+            'max_temp': max(temps)
+        }
+        return JsonResponse(summary)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
