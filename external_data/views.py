@@ -47,9 +47,35 @@ def dashboard(request):
     except requests.exceptions.RequestException as e:
         weather_data['error'] = f"Błąd pobierania danych pogodowych: {e}"
 
+    users_stats = []
+    try:
+        users_res = requests.get("https://jsonplaceholder.typicode.com/users", timeout=5)
+        posts_res = requests.get("https://jsonplaceholder.typicode.com/posts", timeout=5)
+
+        users_res.raise_for_status()
+        posts_res.raise_for_status()
+
+        users = users_res.json()
+        posts = posts_res.json()
+
+        for user in users[:5]:
+            user_posts = [p for p in posts if p['userId'] == user['id']]
+
+            avg_title_length = sum(len(p['title']) for p in user_posts) / len(user_posts) if user_posts else 0
+
+            users_stats.append({
+                'name': user['name'],
+                'post_count': len(user_posts),
+                'avg_title_length': round(avg_title_length, 1)
+            })
+
+    except requests.exceptions.RequestException as e:
+        users_stats = [{'error': f"Błąd pobierania danych użytkowników: {e}"}]
+
     context = {
         'weather': weather_data,
         'chart_uri': chart_uri,
+        'users_stats': users_stats
     }
 
     return render(request, 'external_data/dashboard.html', context)
