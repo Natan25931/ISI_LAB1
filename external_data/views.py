@@ -2,7 +2,8 @@ import requests
 
 import matplotlib.pyplot as plt
 import io
-import urllib, base64
+import urllib
+import base64
 from django.shortcuts import render
 from django.http import JsonResponse
 

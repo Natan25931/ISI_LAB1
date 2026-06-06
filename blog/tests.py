@@ -27,3 +27,13 @@ class PostModelTest(TestCase):
 
     def test_post_str_method(self):
         self.assertEqual(str(self.post), 'Test title')
+
+
+class SimpleAppTests(TestCase):
+    def test_homepage_status_code(self):
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_admin_panel_status_code(self):
+        response = self.client.get('/admin/')
+        self.assertEqual(response.status_code, 302)
