@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 if os.environ.get('GITHUB_ACTIONS') == 'true':
-    # Konfiguracja dla testów w GitHub Actions
+    # Konfiguracja dla testow w GitHub Actions
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
